@@ -1,0 +1,68 @@
+/*Hello everybody i am satinder singh
+ * this is the code for automatic lighting using a PIR(passive infrared sensor) and arduino uno
+ * 
+ * It is a very easy project and any one can make this project within few hours.
+ * you can watch the video tutorial at 
+ * 
+ * 
+ * components required are
+ * arduino uno
+ * PIR(passive infrared sensor)
+ * Servo motor (instead of a servo you can always use relay because it will be cheap, look better)      (i used servo beacuse i didn't wanted to play with main wires of my room)
+ * jumper wires
+ * battery (optional, you can use a power adapter rather)
+ * motor shield(optional for this project,although i used)
+ * 
+ *                                                      CONNECTIONS
+ *  VCC from PIR -->                        5V on arduino uno
+ *  GND(ground) from PIR -->                Gnd on arduino uno
+ *  OUT from PIR -->                        digital pin 3 on arduino uno
+ *  Servo -->                               digital pin 11 on motor shield or on arduino if you are not using motor shield
+ *  if motor shield is not used, then connect vcc from servo to arduino, gnd from servo to gnd on arduino, the third pin to digital pin 3 on arduin uno
+ *  warning !!!!!!!
+ *  do not connect more than one servo directly to arduino uno as it may draw more current from the board.
+ *  
+ *  if you are using motor shield then
+ *  
+ *  Vin from motor shield -->                   vin on arduino uno        
+ *  3V or 5v(according to your motor shield)--> 3or 5V to arduino
+ *  gnd from shield -->                         gnd on arduino        
+ *  Servo -->                                   pin 11 or other to your shield
+ *  pin 11 on shield -->                        digital pin 3 on arduin o uno
+ *  
+ */
+
+
+
+#include<Servo.h>                                       //including the servo library
+int val=0;                                              //declaring a variable val
+int input=3;                                            //declaring the input as the digital pin 3
+int led=13;                                             //declaring the onboard led pin i.e. digital pin 13 
+Servo myservo;                                          //making a servo variable
+
+void setup() {
+  // put your setup code here, to run once:
+pinMode(3,INPUT);                                       //setting the pinmode for the input pin as "INPUT"
+pinMode(13,OUTPUT);                                     //setting the pinmode for the led pin as "OUTPUT"
+myservo.attach(11);                                     //attaching the servo to the digital pin 11
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+val=digitalRead(3);                                     //reading the digital pin 3 and storing the input in variable "val"
+if(val==HIGH)                                           //as the PIR gives "5V" on the output pin if motion is detected, so if val==HIGH means anything other than 0V
+{
+  digitalWrite(13,HIGH);                                // if motion is detected then the led at pin 13 is turned on
+  myservo.write(120);                                   // also rotating the servo to 120 degrees so that the switch turns on(you have to experimentally try the angle)
+  delay(200);                                           //giving time to the servo and led to complete their work
+  
+}
+else                                                    // if motion is not detected 
+{
+  digitalWrite(13,LOW);                                 //led at pin 13 is turned on
+  myservo.write(80);                                    //  rotating the servo to 80 degrees so that the switch turns off(you have to experimentally try the angle)
+  delay(200);                                           //giving time to the servo and led to complete their work
+  
+  }
+}
